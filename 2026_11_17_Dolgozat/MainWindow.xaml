@@ -20,7 +20,13 @@
             <Setter Property="Width" Value="100"></Setter>
             <Setter Property="Height" Value="30"></Setter>
             <Setter Property="Margin" Value="22.5 20"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
+        
     </Window.Resources>
     <Grid ShowGridLines="False">
       
@@ -35,18 +41,18 @@
         <StackPanel Grid.Row="1">
             <WrapPanel>
             <Label Content="Név:"></Label>
-            <TextBox Width="100"></TextBox>
+            <TextBox x:Name="nev" Width="100"></TextBox>
             <Label Content="Életkor:"></Label>
-            <TextBox Width="50"></TextBox>
+            <TextBox x:Name="eletkor" Width="50"></TextBox>
             <Label Content="Pontszám:"></Label>
-             <TextBox Width="50"></TextBox>
+             <TextBox x:Name="pontszam" Width="50"></TextBox>
 
             </WrapPanel>
             <!--A WrapPanel lényegében a StackPanel vízszintesen de neki kis leher orientationt állítani, szóval kb ugyanaz a 2.-->
 
             <WrapPanel>
-                <Button Content="Hozzáadás"></Button>
-                <Button Content="Mentés"></Button>
+                <Button Content="Hozzáadás" Click="hozzaad"></Button>
+                <Button Content="Mentés" Click="mentes"></Button>
             </WrapPanel>
         </StackPanel> 
     </Grid>

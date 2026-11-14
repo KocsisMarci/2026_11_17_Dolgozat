@@ -63,5 +63,53 @@ namespace _2026_11_17_Dolgozat
 
             dataGrid.Items.Refresh();
         }
+
+
+        public void hozzaad(object sender, RoutedEventArgs e) {
+
+            if (nev.Text != "" && eletkor.Text != "" && pontszam.Text != "")
+            {
+
+                //Egy kis bónusz kivételkezelés:
+                try
+                {
+                    if (Convert.ToInt32(pontszam.Text) <= 100 && Convert.ToInt32(pontszam.Text) >= 0)
+                    {
+                        Dolgozat dolgozat = new Dolgozat(nev.Text, Convert.ToInt32(eletkor.Text), Convert.ToInt32(pontszam.Text));
+
+                        dolgozatok.Add(dolgozat);
+
+                        dataGrid.ItemsSource = dolgozatok;
+
+                        dataGrid.Items.Refresh();
+                    }
+
+                    else if (Convert.ToInt32(pontszam.Text) > 100)
+                    {
+                        MessageBox.Show("Maximum 100 pontot lehetett elérni");
+                    }
+
+                    else if (Convert.ToInt32(pontszam.Text) < 0) {
+                        MessageBox.Show("Negatív pontszámot nem lehetett elérni");
+                    }
+
+                    //Most ezt életkorral is el lehetne játszani egyébként.
+                }
+
+                catch (FormatException ex) {
+                    MessageBox.Show("Feltehetőleg nem szám típus lett megadva");
+                }
+            }
+
+            else
+            {
+                MessageBox.Show("Minden mezőt kötelező kitölteni");
+            }
+        
+        }
+
+
+
+        public void mentes(object sender, RoutedEventArgs e) { }
     }
 }
