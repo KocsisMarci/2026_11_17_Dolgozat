@@ -47,7 +47,6 @@
             <WrapPanel>
                 <Button Content="Hozzáadás"></Button>
                 <Button Content="Mentés"></Button>
-
             </WrapPanel>
         </StackPanel> 
     </Grid>
