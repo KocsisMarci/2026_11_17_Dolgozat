@@ -8,6 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text;
+using System.IO;
+using System.Security.RightsManagement;
 
 namespace _2026_11_17_Dolgozat
 {
@@ -30,6 +33,18 @@ namespace _2026_11_17_Dolgozat
                 this.Eletkor = eletkor;
                 this.Pontszam = pontszam;
             }
+
+
+            public override string ToString()
+            {
+                /*
+                Ezt a megoldást azért mellőzöm, mert ha olvasni is kell fájlból ez nem a legszerencsésebb mód.
+
+                return $"A dolgozatíró neve: {this.Nev} {this.Eletkor} éves 100/{this.Pontszam} pontot ért el";
+                */
+
+                return $"{this.Nev};{this.Eletkor};{this.Pontszam}";
+                }
 
         };
 
@@ -65,7 +80,12 @@ namespace _2026_11_17_Dolgozat
         }
 
 
-        public void hozzaad(object sender, RoutedEventArgs e) {
+        private void hozzaad(object sender, RoutedEventArgs e) {
+
+            /*
+             Természetesen lehetne még egyéb optimalizálásokat csinálni.
+             Ha lesz még időm, meg kedvem lehet dolgozgatok még vele.
+             */
 
             if (nev.Text != "" && eletkor.Text != "" && pontszam.Text != "")
             {
@@ -79,6 +99,10 @@ namespace _2026_11_17_Dolgozat
 
                         dolgozatok.Add(dolgozat);
 
+                        nev.Text = "";
+                        eletkor.Text = "";
+                        pontszam.Text = "";
+                        
                         dataGrid.ItemsSource = dolgozatok;
 
                         dataGrid.Items.Refresh();
@@ -87,17 +111,22 @@ namespace _2026_11_17_Dolgozat
                     else if (Convert.ToInt32(pontszam.Text) > 100)
                     {
                         MessageBox.Show("Maximum 100 pontot lehetett elérni");
+                        pontszam.Text = "";
                     }
 
                     else if (Convert.ToInt32(pontszam.Text) < 0) {
                         MessageBox.Show("Negatív pontszámot nem lehetett elérni");
+                        pontszam.Text = "";
+
                     }
 
-                    //Most ezt életkorral is el lehetne játszani egyébként.
+                    //Most ezt életkorral is el lehetne játszani ugyanígy egyébként.
                 }
 
                 catch (FormatException ex) {
                     MessageBox.Show("Feltehetőleg nem szám típus lett megadva");
+                    eletkor.Text = "";
+                    pontszam.Text = "";
                 }
             }
 
@@ -110,6 +139,19 @@ namespace _2026_11_17_Dolgozat
 
 
 
-        public void mentes(object sender, RoutedEventArgs e) { }
+        private void mentes(object sender, RoutedEventArgs e) {
+            //A mentés gomb lehet, hogy azt akarta jelenteni, hogy a dataGrid frissül, de én most itt fájlba fogok írni.
+            //Kell a using System.Text, meg a Using System.IO
+
+
+            File.WriteAllText("eredmeny.txt","A dolgozatot megírókról:\n");
+            
+            foreach (Dolgozat dolgozat in dolgozatok) {
+                File.AppendAllText("eredmeny.txt", dolgozat.ToString() + "\n");
+            }
+
+            MessageBox.Show("Sikeres fájlba írás");
+           
+        }
     }
 }
